@@ -1,11 +1,12 @@
 import type { NextPage } from "next";
+import { CreateNewDeckFAB } from "~/components/buttons";
 import { UserBadge } from "~/components/user";
 
 const Home: NextPage = () => {
   return (
     <div>
       <UserBadge />
-      <h1>Hello</h1>
+      <CreateNewDeckFAB />
     </div>
   );
 };
