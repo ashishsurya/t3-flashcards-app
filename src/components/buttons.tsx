@@ -40,7 +40,7 @@ export const LogoutButton = () => {
   return (
     <button
       onClick={handleLogout}
-      className="flex w-full items-center justify-center space-x-3 rounded-lg bg-red-500 py-3 font-medium tracking-tight text-white"
+      className="flex w-full items-center justify-center space-x-3 rounded-lg bg-red-500 py-1 font-medium tracking-tight text-white"
     >
       <p>Sign out</p>
       <ArrowLeftOnRectangleIcon className="h-7 w-7" />

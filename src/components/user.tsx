@@ -10,7 +10,7 @@ export const UserBadge = () => {
   const { data: session } = useSession();
 
   return (
-    <Menu as="div" className={"absolute right-10 top-10 "}>
+    <Menu as="div" className={"absolute right-10 top-10"}>
       {!session || !session.user ? (
         <LoadingSpinner />
       ) : (
@@ -20,15 +20,15 @@ export const UserBadge = () => {
               "flex items-center  justify-between  rounded-lg py-2 !text-black md:gap-4 md:bg-white md:px-4"
             }
           >
-            <p className="hidden font-light  md:inline-flex">
+            <p className="hidden font-light text-sm  md:inline-flex">
               {session.user?.name}
             </p>
             <Image
               src={session.user?.image || ""}
               alt=""
-              className="h-10 w-10 rounded-full"
-              width={40}
-              height={40}
+              className=" rounded-full"
+              width={25+5}
+              height={25+5}
             />
           </Menu.Button>
         </>

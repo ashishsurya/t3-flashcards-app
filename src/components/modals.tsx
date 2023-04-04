@@ -5,11 +5,26 @@ import { useRecoilState } from "recoil";
 import { createDeckModalAtom } from "~/atoms/createDeckModalAtom";
 import { api } from "~/utils/api";
 import { LoadingSpinner } from "./loading";
+import { toast } from "react-hot-toast";
 
 export const CreateNewDeck = () => {
   const [input, setInput] = useState("");
   const ctx = api.useContext();
-  const { mutateAsync, isLoading: isPosting } = api.deck.create.useMutation();
+  const { mutate, isLoading: isPosting } = api.deck.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      void ctx.deck.getDecks.invalidate();
+      setNewDeckModalState({ open: false });
+    },
+    onError: (e) => {
+      const errorMessage = e.data?.zodError?.fieldErrors.title;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Something went wrong......");
+      }
+    },
+  });
   const [newDeckModalState, setNewDeckModalState] =
     useRecoilState(createDeckModalAtom);
 
@@ -18,15 +33,13 @@ export const CreateNewDeck = () => {
     [setNewDeckModalState]
   );
 
-  const createnewDeck = useCallback(async () => {
-    await mutateAsync({ title: input });
-    void ctx.deck.getDecks.invalidate();
-    setNewDeckModalState({ open: false });
-  }, [ctx.deck.getDecks, input, mutateAsync, setNewDeckModalState]);
+  const createnewDeck = useCallback(() => {
+    mutate({ title: input });
+  }, [input, mutate]);
 
   return (
     <ModalLayout show={newDeckModalState.open} onClose={onClose}>
-      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-slate-800 p-6 text-left align-middle text-white shadow-xl transition-all">
+      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#111] p-6 text-left align-middle text-white shadow-xl transition-all">
         <Dialog.Title
           as="h2"
           className={"text-center text-2xl font-bold tracking-tighter"}
@@ -91,7 +104,7 @@ export const ModalLayout = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-60" />
+          <div className="fixed inset-0 bg-black bg-opacity-80" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">

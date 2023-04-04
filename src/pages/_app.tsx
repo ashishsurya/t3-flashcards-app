@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import { RecoilRoot } from "recoil";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <RecoilRoot>
       <SessionProvider session={session}>
         <div className={inter.className}>
+          <Toaster position="bottom-center" />
           <Component {...pageProps} />
         </div>
       </SessionProvider>
