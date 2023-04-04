@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Menu } from "@headlessui/react";
-import { useSession, signOut } from "next-auth/react";
+import { Menu, Transition } from "@headlessui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { Fragment } from "react";
 import { LoadingSpinner } from "./loading";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { LogoutButton } from "./buttons";
 
 export const UserBadge = () => {
   const { data: session } = useSession();
-  console.log(session);
-
-  const handleLogout = async () => {
-    await signOut({ redirect: true, callbackUrl: "/login" });
-  };
 
   return (
     <Menu as="div" className={"absolute right-10 top-10 h-12 "}>
@@ -21,10 +17,10 @@ export const UserBadge = () => {
         <>
           <Menu.Button
             className={
-              "flex items-center  justify-between  rounded-lg py-2 md:gap-4 md:bg-slate-600 md:px-4"
+              "flex items-center  justify-between  rounded-lg py-2 !text-black md:gap-4 md:bg-white md:px-4"
             }
           >
-            <p className="hidden font-light text-white md:inline-flex">
+            <p className="hidden font-light  md:inline-flex">
               {session.user?.name}
             </p>
             <Image
@@ -37,17 +33,21 @@ export const UserBadge = () => {
           </Menu.Button>
         </>
       )}
-      <Menu.Items className={"absolute right-0 mt-1 w-56"}>
-        <Menu.Item>
-          <button
-            onClick={handleLogout}
-            className="flex w-full items-center justify-center space-x-3 bg-red-500 py-3 text-white"
-          >
-            <p>Sign out</p>
-            <ArrowLeftIcon className="h-7 w-7" />
-          </button>
-        </Menu.Item>
-      </Menu.Items>
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-500"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-200"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items className={"absolute right-0 mt-1 w-56 "}>
+          <Menu.Item>
+            <LogoutButton />
+          </Menu.Item>
+        </Menu.Items>
+      </Transition>
     </Menu>
   );
 };

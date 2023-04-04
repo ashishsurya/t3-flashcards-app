@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { signIn } from "next-auth/react";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
+import { signIn, signOut } from "next-auth/react";
+import { useCallback } from "react";
 
 export const SocialMediaLoginButton = ({
   provider,
   helperText,
 }: {
-  provider: "discord" | "twitter";
+  provider: "discord";
   helperText: string;
 }) => {
-  const login = async () => {
+  const login = useCallback(async () => {
     await signIn(provider, { redirect: true, callbackUrl: "/" });
-  };
+  }, [provider]);
 
   return (
     <div className="">
@@ -22,5 +24,21 @@ export const SocialMediaLoginButton = ({
       </button>
       <p className="font-mono text-xs">{helperText}</p>
     </div>
+  );
+};
+
+export const LogoutButton = () => {
+  const handleLogout = useCallback(async () => {
+    await signOut({ redirect: true, callbackUrl: "/login" });
+  }, []);
+
+  return (
+    <button
+      onClick={handleLogout}
+      className="flex w-full items-center justify-center space-x-3 rounded-lg bg-red-500 py-3 font-medium tracking-tight text-white"
+    >
+      <p>Sign out</p>
+      <ArrowLeftOnRectangleIcon className="h-7 w-7" />
+    </button>
   );
 };
