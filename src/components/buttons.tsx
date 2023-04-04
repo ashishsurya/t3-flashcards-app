@@ -3,6 +3,8 @@ import { ArrowLeftOnRectangleIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { signIn, signOut } from "next-auth/react";
 import { JetBrains_Mono } from "next/font/google";
 import { useCallback } from "react";
+import { useSetRecoilState } from "recoil";
+import { createDeckModalAtom } from "~/atoms/createDeckModalAtom";
 
 const jetBrains_Mono = JetBrains_Mono({ subsets: ["latin"] });
 
@@ -47,8 +49,16 @@ export const LogoutButton = () => {
 };
 
 export const CreateNewDeckFAB = () => {
+  const setNewDeckModalState = useSetRecoilState(createDeckModalAtom);
+
+  const onOpen = useCallback(
+    () => setNewDeckModalState({ open: true }),
+    [setNewDeckModalState]
+  );
+
   return (
     <button
+      onClick={onOpen}
       type="button"
       className="absolute bottom-10 right-10  rounded-full border  p-4 text-center font-medium duration-500  hover:scale-110 hover:bg-white  hover:text-black focus:bg-white focus:text-black focus:outline-none"
     >

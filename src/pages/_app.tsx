@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
+import { RecoilRoot } from "recoil";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +14,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <div className={inter.className}>
-        <Component {...pageProps} />
-      </div>
-    </SessionProvider>
+    <RecoilRoot>
+      <SessionProvider session={session}>
+        <div className={inter.className}>
+          <Component {...pageProps} />
+        </div>
+      </SessionProvider>
+    </RecoilRoot>
   );
 };
 

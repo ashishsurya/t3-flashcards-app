@@ -25,3 +25,4 @@ export const LoadingSpinner = ({ size }: { size?: number }) => {
     </div>
   );
 };
+

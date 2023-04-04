@@ -10,7 +10,7 @@ export const UserBadge = () => {
   const { data: session } = useSession();
 
   return (
-    <Menu as="div" className={"absolute right-10 top-10 h-12 "}>
+    <Menu as="div" className={"absolute right-10 top-10 "}>
       {!session || !session.user ? (
         <LoadingSpinner />
       ) : (
