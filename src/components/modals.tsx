@@ -20,8 +20,10 @@ export const CreateNewDeck = () => {
       const errorMessage = e.data?.zodError?.fieldErrors.title;
       if (errorMessage && errorMessage[0]) {
         toast.error(errorMessage[0]);
+      } else if (e.data?.code === "CONFLICT") {
+        toast.error(e.message);
       } else {
-        toast.error("Something went wrong......");
+        toast.error("Something went wrong");
       }
     },
   });
@@ -39,46 +41,44 @@ export const CreateNewDeck = () => {
 
   return (
     <ModalLayout show={newDeckModalState.open} onClose={onClose}>
-      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#111] p-6 text-left align-middle text-white shadow-xl transition-all">
-        <Dialog.Title
-          as="h2"
-          className={"text-center text-2xl font-bold tracking-tighter"}
-        >
-          Create a New Deck
-        </Dialog.Title>
-        <Dialog.Description
-          as="div"
-          className="flex w-full flex-col items-center space-y-4 pt-10"
-        >
-          <div className="w-full self-start">
-            <label htmlFor="new-deck-input">
-              <p className="pb-2">Deck Title : </p>
-            </label>
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              type="text"
-              className="w-full rounded-md border border-slate-400 bg-transparent px-4  py-2 focus:outline-none"
-              placeholder="Enter title of new deck"
-              id="new-deck-input"
-            />
-          </div>
-          <div className="self-end">
-            <button
-              onClick={onClose}
-              className="bg-transparent text-red-400 hover:shadow-none"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={createnewDeck}
-              className="!bg-black  bg-transparent  text-center hover:shadow-none"
-            >
-              {isPosting ? <LoadingSpinner /> : "Create"}
-            </button>
-          </div>
-        </Dialog.Description>
-      </Dialog.Panel>
+      <Dialog.Title
+        as="h2"
+        className={"text-center text-2xl font-bold tracking-tighter"}
+      >
+        Create a New Deck
+      </Dialog.Title>
+      <Dialog.Description
+        as="div"
+        className="flex w-full flex-col items-center space-y-4 pt-10"
+      >
+        <div className="w-full self-start">
+          <label htmlFor="new-deck-input">
+            <p className="pb-2">Deck Title : </p>
+          </label>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            className="w-full rounded-md border border-slate-400 bg-transparent px-4  py-2 focus:outline-none"
+            placeholder="Enter title of new deck"
+            id="new-deck-input"
+          />
+        </div>
+        <div className="self-end">
+          <button
+            onClick={onClose}
+            className="bg-transparent text-red-400 hover:shadow-none"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={createnewDeck}
+            className="  ml-4 rounded-md bg-white px-4 py-1 text-center text-black  shadow-lg hover:shadow-none"
+          >
+            {isPosting ? <LoadingSpinner /> : "Create"}
+          </button>
+        </div>
+      </Dialog.Description>
     </ModalLayout>
   );
 };
@@ -118,7 +118,9 @@ export const ModalLayout = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              {children}
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#111] p-6 text-left align-middle text-white shadow-xl transition-all">
+                {children}
+              </Dialog.Panel>
             </Transition.Child>
           </div>
         </div>
