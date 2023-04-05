@@ -36,4 +36,18 @@ export const decksRouter = createTRPCRouter({
       include: { _count: true },
     })
   ),
+
+  getDeckById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input: { id } }) => {
+      const deck = await ctx.prisma.deck.findFirst({
+        where: { authorId: ctx.session.user.id, id },
+      });
+
+      if (!deck) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "" });
+      } else {
+        return deck;
+      }
+    }),
 });

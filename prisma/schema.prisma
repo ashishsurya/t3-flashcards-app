@@ -82,7 +82,6 @@ model Flashcard {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  authorId  String   @map("author_id")
   question  String
   answer    String
   deckId    String
