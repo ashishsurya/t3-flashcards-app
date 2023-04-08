@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
@@ -6,6 +7,42 @@ import { createDeckModalAtom } from "~/atoms/createDeckModalAtom";
 import { api } from "~/utils/api";
 import { LoadingSpinner } from "./loading";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
+
+export const ForceLogin = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const forceLogin = () => {
+    setLoading(true);
+    setTimeout(async () => {
+      await router.push("/login");
+      setLoading(false);
+    }, 1000);
+  };
+
+  return (
+    <ModalLayout onClose={() => {}} show={true}>
+      <Dialog.Title
+        as="h2"
+        className={"text-center text-2xl font-bold tracking-tight"}
+      >
+        Please Login To Continue
+      </Dialog.Title>
+      <Dialog.Description
+        as="div"
+        className="flex w-full flex-col items-center space-y-4 pt-10"
+      >
+        <button
+          onClick={forceLogin}
+          className="rounded-md bg-white px-4 py-2 text-black"
+        >
+          {loading ? <LoadingSpinner /> : "Login"}
+        </button>
+      </Dialog.Description>
+    </ModalLayout>
+  );
+};
 
 export const CreateNewDeck = () => {
   const [input, setInput] = useState("");
