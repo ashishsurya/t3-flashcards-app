@@ -1,9 +1,9 @@
+import type { Deck as DeckType, Prisma } from "@prisma/client";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 import { api } from "~/utils/api";
 import { LoadingSpinner } from "./loading";
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
-import { useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 
@@ -20,39 +20,41 @@ export const DecksWrapper = () => {
 
 export const Decks = () => {
   const { data: decks, isLoading } = api.deck.getDecks.useQuery();
-  const router = useRouter();
-
-
-
-  const handleDeckClick = useCallback((deckId: string) => {
-    console.log("DECK CLICKED");
-    router.push(`/d/${deckId}`);
-  }, [router]);
-
-
 
   if (isLoading) return <LoadingSpinner size={50} />;
   if (!decks) return <div>Something went wrong.....</div>;
   if (decks.length === 0) return <div>No decks create some.....</div>;
 
   return (
-    <ul className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+    <ul className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-5">
       {decks.map((deck) => {
         return (
-          <li key={deck.id} onClick={() => handleDeckClick(deck.id)}>
-            <div className="flex h-48 cursor-pointer flex-col items-start rounded-lg border border-slate-600 bg-black p-4 hover:border-white">
-              <p className="font-bold tracking-tight">{deck.title}</p>
-              <p className="flex-1 text-sm">
-                {" "}
-                {deck._count.flashcards} flashcard(s) inside.
-              </p>
-              <p className="text-xs text-[#888]">
-                {dayjs(deck.createdAt).fromNow()}
-              </p>
-            </div>
+          <li key={deck.id}>
+            <Link href={`/d/${deck.id}`} as={`/d/${deck.id}`}>
+              <Deck deck={deck} />
+            </Link>
           </li>
         );
       })}
     </ul>
+  );
+};
+
+export const Deck = ({
+  deck,
+}: {
+  deck: DeckType & {
+    _count: Prisma.DeckCountOutputType;
+  };
+}) => {
+  return (
+    <div className="flex h-48 cursor-pointer flex-col items-start rounded-lg hover:border  bg-black p-4 hover:border-white">
+      <p className="font-bold tracking-tight text-xl">{deck.title}</p>
+      <p className="flex-1 text-sm">
+        {" "}
+        {deck._count.flashcards} flashcard(s) inside.
+      </p>
+      <p className="text-xs text-[#888]">{dayjs(deck.createdAt).fromNow()}</p>
+    </div>
   );
 };

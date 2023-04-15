@@ -1,14 +1,14 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { api } from "~/utils/api";
 
 import { Toaster } from "react-hot-toast";
 import { RecoilRoot } from "recoil";
 import "~/styles/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,7 +17,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <RecoilRoot>
       <SessionProvider session={session}>
-        <div className={inter.className}>
+        <div className={dmSans.className}>
           <Toaster position="bottom-center" />
           <Component {...pageProps} />
         </div>
