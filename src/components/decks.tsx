@@ -48,8 +48,8 @@ export const Deck = ({
   };
 }) => {
   return (
-    <div className="flex h-48 cursor-pointer flex-col items-start rounded-lg hover:border  bg-black p-4 hover:border-white">
-      <p className="font-bold tracking-tight text-xl">{deck.title}</p>
+    <div className="flex h-48 cursor-pointer flex-col items-start rounded-lg bg-black  p-4 hover:border hover:border-white">
+      <p className="text-xl font-bold tracking-tight">{deck.title}</p>
       <p className="flex-1 text-sm">
         {" "}
         {deck._count.flashcards} flashcard(s) inside.
