@@ -1,14 +1,26 @@
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { CreateNewDeckFAB } from "~/components/buttons";
 import { DecksWrapper } from "~/components/decks";
 import { LoadingSpinner } from "~/components/loading";
 import { CreateNewDeck, ForceLogin } from "~/components/modals";
 import { UserBadge } from "~/components/user";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plus_jakarta_sans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+});
 
 const Home: NextPage = () => {
-  const { data, status } = useSession();
+  const { status } = useSession();
+  const router = useRouter();
+
+  const deckId = router.query.deckId;
+
+  console.log(deckId);
 
   if (status === "loading") {
     return (
@@ -20,7 +32,7 @@ const Home: NextPage = () => {
     return <ForceLogin />;
   } else {
     return (
-      <div className="">
+      <div className={plus_jakarta_sans.className}>
         <Head>
           <title>App &middot; Flashcards</title>
         </Head>

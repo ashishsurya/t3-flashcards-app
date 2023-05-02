@@ -8,6 +8,13 @@ import { api } from "~/utils/api";
 import { LoadingSpinner } from "./loading";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plus_jakarta_sans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  variable:"--font-plus-jakarta-sans"
+});
 
 export const ForceLogin = () => {
   const router = useRouter();
@@ -120,6 +127,9 @@ export const CreateNewDeck = () => {
   );
 };
 
+
+
+
 export const ModalLayout = ({
   children,
   show,
@@ -131,7 +141,7 @@ export const ModalLayout = ({
 }) => {
   return (
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+      <Dialog as="div" className={"relative z-10"} onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -155,7 +165,11 @@ export const ModalLayout = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#111] p-6 text-left align-middle text-white shadow-xl transition-all">
+              <Dialog.Panel
+                className={
+                  `w-full ${plus_jakarta_sans.className}  max-w-md transform overflow-hidden rounded-2xl bg-[#111] p-6 text-left align-middle text-white shadow-xl transition-all`
+                }
+              >
                 {children}
               </Dialog.Panel>
             </Transition.Child>

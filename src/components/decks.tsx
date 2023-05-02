@@ -30,7 +30,7 @@ export const Decks = () => {
       {decks.map((deck) => {
         return (
           <li key={deck.id}>
-            <Link href={`/d/${deck.id}`} as={`/d/${deck.id}`}>
+            <Link href={`/?deckId=${deck.id}`} as={`/d/${deck.id}`}>
               <Deck deck={deck} />
             </Link>
           </li>
